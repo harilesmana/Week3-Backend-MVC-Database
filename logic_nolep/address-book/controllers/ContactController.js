@@ -1,39 +1,40 @@
-let Contact = require("../models/Contact");
+const Contact = require("../models/contact");
+const view = require("../views/view");
 
 class ContactController {
     static async create(name, phoneNumber, company, email) {
         try {
-            let id = await Contact.create(name, phoneNumber, company, email);
-            console.log(`Contact created with ID: ${id}`);
+            await Contact.create(name, phoneNumber, company, email);
+            view.successMessage("Contact created successfully!");
         } catch (error) {
-            console.error("Error creating contact:", error.message);
+            view.errorMessage(error.message);
         }
     }
 
     static async update(id, name, phoneNumber, company, email) {
         try {
             await Contact.update(id, name, phoneNumber, company, email);
-            console.log(`Contact with ID ${id} updated.`);
+            view.successMessage("Contact updated successfully!");
         } catch (error) {
-            console.error("Error updating contact:", error.message);
+            view.errorMessage(error.message);
         }
     }
 
     static async delete(id) {
         try {
             await Contact.delete(id);
-            console.log(`Contact with ID ${id} deleted.`);
+            view.successMessage("Contact deleted successfully!");
         } catch (error) {
-            console.error("Error deleting contact:", error.message);
+            view.errorMessage(error.message);
         }
     }
 
-    static async showAll() {
+    static async show() {
         try {
-            let contacts = await Contact.getAll();
-            console.table(contacts);
+            const contacts = await Contact.show();
+            view.displayContacts(contacts);
         } catch (error) {
-            console.error("Error fetching contacts:", error.message);
+            view.errorMessage(error.message);
         }
     }
 }
